@@ -9,7 +9,7 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            //   ProductManager productManager = new ProductManager(new InMemoryProductDal());
+            // ProductManager productManager = new ProductManager(new InMemoryProductDal());
              ProductTest();
             //IOC----->(new EfCategoryDal())
             //  CategoryTest();

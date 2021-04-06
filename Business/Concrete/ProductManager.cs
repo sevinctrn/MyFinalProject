@@ -4,6 +4,7 @@ using Business.CCS;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Business;
@@ -46,34 +47,6 @@ namespace Business.Concrete
             }
             _productDal.Add(product);
             return new SuccessResult(Messages.ProductAdded);
-
-            //Eğer mevcut kategori sayısı 15 i gectiyse sisteme yeni ürün eklenemez
-            //aynı isimde ürün eklenemez
-            //bir kategoride en fazla 10 ürün olabilir
-            /* if(CheckIfProductCountOfCategoryCorrect(product.CategoryId).Success)
-              {
-                  if (CheckIfProductCountOfNameExists(product.ProductName).Success)
-                  {
-                      _productDal.Add(product);
-                      return new SuccessResult(Messages.ProductAdded);
-
-                  }
-
-              }
-            
-
-            return new ErrorResult(Messages.ProductAdded);
-
-
-            */
-            //business codes
-
-            //validation
-            //  ValidationTool.Validate(new ProductValidator(), product);
-            //Loglama
-
-
-
 
         }
         [CacheAspect]//key,value
@@ -128,7 +101,6 @@ namespace Business.Concrete
         private IResult CheckIfProductCountOfCategoryCorrect(int categoryId)
         {
             //bir kategoride en fazla 10 ürün olabilir
-
             //select count(*) from products where categoryId=1
             var result = _productDal.GetAll(p => p.CategoryId == categoryId).Count;
             if (result >= 10)
@@ -164,7 +136,7 @@ namespace Business.Concrete
 
         }
 
-     ///   [TransactionScopeAspect]
+        [TransactionScopeAspect]
         public IResult AddTransactionalTest(Product product)
         {
             Add(product);
